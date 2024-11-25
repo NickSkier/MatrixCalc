@@ -1,5 +1,6 @@
 matrixcalc_sources = [
   'main.cpp',
+  'Matrix.cpp',
 ]
 
 matrixcalc_deps = [
