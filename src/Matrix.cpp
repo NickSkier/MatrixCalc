@@ -1,8 +1,5 @@
 #include "Matrix.h"
 
-// Инициализация статической переменной
-double Matrix::errorValue = 0.0;
-
 // Конструктор квадратной матрицы
 Matrix::Matrix(size_t size) : rows(size), cols(size) {
 	matrix.resize(size, std::vector<double>(size, 0));
@@ -136,7 +133,7 @@ Matrix Matrix::submatrix(size_t excludeRow, size_t excludeCol) const {
 // Обмен строк
 void Matrix::swapRows(size_t row1, size_t row2) {
     if (row1 >= rows || row2 >= rows) {
-        std::cerr << "Row index out of bounds.";
+        throw std::out_of_range("Row index out of bounds.");
         return;
     }
     std::swap(matrix[row1], matrix[row2]);

@@ -12,7 +12,6 @@ private:
     size_t rows;
     size_t cols;
     std::vector<std::vector<double>> matrix;
-    static double errorValue; // Объявляем статическую переменную
 public:
     Matrix(size_t size);               // Конструктор для квадратной матрицы
     Matrix(size_t rows, size_t cols);  // Конструктор для матрицы произвольного размера
