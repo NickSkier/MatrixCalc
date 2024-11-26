@@ -241,8 +241,8 @@ void Matrix::fillRandom(int min, int max) {
 }
 
 // Вывод матрицы на экран
-void Matrix::print(int precionSize) {
-    std::cout << std::fixed << std::setprecision(precionSize);
+void Matrix::print(int precisionSize) {
+    std::cout << std::fixed << std::setprecision(precisionSize);
     for (size_t i = 0; i < rows; ++i) {
         std::cout << "|";
         for (size_t j = 0; j < cols; ++j) {

@@ -93,7 +93,7 @@ int main() {
                     std::cin >> index;
                     if (index < matrices.size()) {
                         std::cout << "Матрица [" << index << "]:\n";
-                        matrices[index]->print();
+                        matrices[index]->print(settings[1]);
                     } else {
                         std::cout << "Неверный индекс матрицы.\n";
                     }
@@ -106,7 +106,7 @@ int main() {
                     if (index < matrices.size()) {
                         Matrix transposed = matrices[index]->transpose();
                         std::cout << "Транспонированная матрица:\n";
-                        transposed.print();
+                        transposed.print(settings[1]);
 		                if (settings[0] == 1) {
 		                    matrices.emplace_back(std::make_unique<Matrix>(transposed));
 		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
@@ -125,7 +125,7 @@ int main() {
                     if (index1 < matrices.size() && index2 < matrices.size()) {
                         Matrix sum = *matrices[index1] + *matrices[index2];
                         std::cout << "Результат сложения:\n";
-                        sum.print();
+                        sum.print(settings[1]);
 		                if (settings[0] == 1) {
 		                    matrices.emplace_back(std::make_unique<Matrix>(sum));
 		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
@@ -144,7 +144,7 @@ int main() {
                     if (index1 < matrices.size() && index2 < matrices.size()) {
                         Matrix diff = *matrices[index1] - *matrices[index2];
                         std::cout << "Результат вычитания:\n";
-                        diff.print();
+                        diff.print(settings[1]);
 		                if (settings[0] == 1) {
 		                    matrices.emplace_back(std::make_unique<Matrix>(diff));
 		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
@@ -163,7 +163,7 @@ int main() {
                     if (index1 < matrices.size() && index2 < matrices.size()) {
                         Matrix product = *matrices[index1] * *matrices[index2];
                         std::cout << "Результат умножения:\n";
-                        product.print();
+                        product.print(settings[1]);
 		                if (settings[0] == 1) {
 		                    matrices.emplace_back(std::make_unique<Matrix>(product));
 		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
@@ -183,7 +183,7 @@ int main() {
                     if (index < matrices.size() && matrices[index]) {
                         Matrix scaled = *matrices[index] * scalar;
                         std::cout << "Результат умножения на скаляр:\n";
-                        scaled.print();
+                        scaled.print(settings[1]);
 		                if (settings[0] == 1) {
 		                    matrices.emplace_back(std::make_unique<Matrix>(scaled));
 		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
@@ -204,7 +204,7 @@ int main() {
                         if (scalar != 0) {
                             Matrix scaled = *matrices[index] / scalar;
                             std::cout << "Результат деления на скаляр:\n";
-                            scaled.print();
+                            scaled.print(settings[1]);
 		                    if (settings[0] == 1) {
 		                        matrices.emplace_back(std::make_unique<Matrix>(scaled));
 		                        std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
@@ -227,7 +227,7 @@ int main() {
                     if (index < matrices.size() && matrices[index]) {
                         Matrix powered = matrices[index]->power(power);
                         std::cout << "Результат возведения в степень:\n";
-                        powered.print();
+                        powered.print(settings[1]);
 		                if (settings[0] == 1) {
 		                    matrices.emplace_back(std::make_unique<Matrix>(powered));
 		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
@@ -256,7 +256,7 @@ int main() {
                     if (index < matrices.size() && matrices[index]) {
                         Matrix inv = matrices[index]->inverse();
                         std::cout << "Обратная матрица:\n";
-                        inv.print();
+                        inv.print(settings[1]);
 		                if (settings[0] == 1) {
 		                    matrices.emplace_back(std::make_unique<Matrix>(inv));
 		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
