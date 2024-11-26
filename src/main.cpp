@@ -54,7 +54,17 @@ void showMainMenu() {
     std::cout << "10. Вычисление определителя\n";
     std::cout << "11. Вычисление обратной матрицы\n";
     std::cout << "12. Вычисление ранга матрицы\n";
+    std::cout << "20. Настройки\n";
     std::cout << "0. Выход\n";
+    std::cout << "Введите номер операции: ";
+}
+
+std::vector<int> settings = {1};
+//  Меню настроек
+void showSettingsMenu() {
+    std::cout << "\n--- Настройки калькулятора ---\n";
+    std::cout << "1. Сохранять результаты операций : " << settings[0] << std::endl;
+    std::cout << "0. Вернуться\n";
     std::cout << "Введите номер операции: ";
 }
 
@@ -96,6 +106,10 @@ int main() {
                         Matrix transposed = matrices[index]->transpose();
                         std::cout << "Транспонированная матрица:\n";
                         transposed.print();
+		                if (settings[0] == 1) {
+		                    matrices.emplace_back(std::make_unique<Matrix>(transposed));
+		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                }
                     } else {
                         std::cout << "Неверный индекс матрицы.\n";
                     }
@@ -111,6 +125,10 @@ int main() {
                         Matrix sum = *matrices[index1] + *matrices[index2];
                         std::cout << "Результат сложения:\n";
                         sum.print();
+		                if (settings[0] == 1) {
+		                    matrices.emplace_back(std::make_unique<Matrix>(sum));
+		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                }
                     } else {
                         std::cout << "Неверные индексы матриц.\n";
                     }
@@ -126,6 +144,10 @@ int main() {
                         Matrix diff = *matrices[index1] - *matrices[index2];
                         std::cout << "Результат вычитания:\n";
                         diff.print();
+		                if (settings[0] == 1) {
+		                    matrices.emplace_back(std::make_unique<Matrix>(diff));
+		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                }
                     } else {
                         std::cout << "Неверные индексы матриц.\n";
                     }
@@ -141,6 +163,10 @@ int main() {
                         Matrix product = *matrices[index1] * *matrices[index2];
                         std::cout << "Результат умножения:\n";
                         product.print();
+		                if (settings[0] == 1) {
+		                    matrices.emplace_back(std::make_unique<Matrix>(product));
+		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                }
                     } else {
                         std::cout << "Неверные индексы матриц.\n";
                     }
@@ -157,6 +183,10 @@ int main() {
                         Matrix scaled = *matrices[index] * scalar;
                         std::cout << "Результат умножения на скаляр:\n";
                         scaled.print();
+		                if (settings[0] == 1) {
+		                    matrices.emplace_back(std::make_unique<Matrix>(scaled));
+		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                }
                     } else {
                         std::cout << "Неверный индекс матрицы.\n";
                     }
@@ -174,6 +204,10 @@ int main() {
                             Matrix scaled = *matrices[index] / scalar;
                             std::cout << "Результат деления на скаляр:\n";
                             scaled.print();
+		                    if (settings[0] == 1) {
+		                        matrices.emplace_back(std::make_unique<Matrix>(scaled));
+		                        std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                    }
                         } else {
                             std::cout << "Ошибка: деление на ноль.\n";
                         }
@@ -193,6 +227,10 @@ int main() {
                         Matrix powered = matrices[index]->power(power);
                         std::cout << "Результат возведения в степень:\n";
                         powered.print();
+		                if (settings[0] == 1) {
+		                    matrices.emplace_back(std::make_unique<Matrix>(powered));
+		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                }
                     } else {
                         std::cout << "Неверный индекс матрицы.\n";
                     }
@@ -218,6 +256,10 @@ int main() {
                         Matrix inv = matrices[index]->inverse();
                         std::cout << "Обратная матрица:\n";
                         inv.print();
+		                if (settings[0] == 1) {
+		                    matrices.emplace_back(std::make_unique<Matrix>(inv));
+		                    std::cout << "Матрица сохранена. Индекс: " << matrices.size() - 1 << std::endl;
+		                }
                     } else {
                         std::cout << "Неверный индекс матрицы.\n";
                     }
@@ -235,6 +277,26 @@ int main() {
                     }
                     break;
                 }
+                case 20: {
+		            do {
+		                showSettingsMenu();
+		                std::cin >> choice;
+		                switch (choice) {
+		                case 1: {
+		                    std::cout << "Сохранять ли результаты операций как новые матрицы с отдельным индексом? 1 (Да), 0 (Нет): ";
+		                    std::cin >> settings[0];
+		                    break;
+		                }
+		                case 0:
+		                    std::cout << "Выход из настроек\n";
+		                    break;
+		                default:
+		                    std::cout << "Неверный выбор. Попробуйте снова.\n";
+		                }
+		            } while (choice != 0);
+					choice = -1;
+                		break;
+            }
                 case 0:
                     std::cout << "Программа завершена.\n";
                     break;
