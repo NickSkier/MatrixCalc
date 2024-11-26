@@ -22,8 +22,7 @@ Matrix::Matrix(size_t rows, size_t cols) : rows(rows), cols(cols) {
 // Оператор доступа для константного объекта
 const double& Matrix::operator()(size_t row, size_t col) const {
 	if (row >= rows || col >= cols) {
-		std::cerr << "Index out of bounds.";
-		return errorValue;
+		throw std::out_of_range("Index out of bounds.");
 	}
 	return matrix[row][col];
 }
@@ -31,8 +30,7 @@ const double& Matrix::operator()(size_t row, size_t col) const {
 // Оператор доступа
 double& Matrix::operator()(size_t row, size_t col) {
 	if (row >= rows || col >= cols) {
-		std::cerr << "Index out of bounds.";
-		return errorValue;
+		throw std::out_of_range("Index out of bounds.");
 	}
 	return matrix[row][col];
 }
@@ -40,8 +38,7 @@ double& Matrix::operator()(size_t row, size_t col) {
 // Сложение матриц
 Matrix Matrix::operator+(const Matrix& other) const {
 	if (rows != other.rows || cols != other.cols) {
-		std::cerr << "Matrix dimensions must match for addition." << std::endl;
-		return Matrix(rows, cols);
+		throw std::invalid_argument("Matrix dimensions must match for addition.");
 	}
 	Matrix result(rows, cols);
 	for (size_t i = 0; i < rows; ++i) {
@@ -55,8 +52,7 @@ Matrix Matrix::operator+(const Matrix& other) const {
 // Вычитание матриц
 Matrix Matrix::operator-(const Matrix& other) const {
 	if (rows != other.rows || cols != other.cols) {
-		std::cerr << "Matrix dimensions must match for subtract." << std::endl;
-		return Matrix(rows, cols);
+		throw std::invalid_argument("Matrix dimensions must match for subtraction.");
 	}
 	Matrix result(rows, cols);
 	for (size_t i = 0; i < rows; ++i) {
@@ -70,8 +66,7 @@ Matrix Matrix::operator-(const Matrix& other) const {
 // Умножение матриц
 Matrix Matrix::operator*(const Matrix& other) const {
 	if (cols != other.rows) {
-		std::cerr << "Matrix dimensions must match for multiplication." << std::endl;
-		return Matrix(rows, cols);
+		throw std::invalid_argument("Matrix dimensions must match for multiplication.");
 	}
 	Matrix result(rows, other.cols);
 	for (size_t i = 0; i < rows; ++i) {
@@ -150,8 +145,7 @@ void Matrix::swapRows(size_t row1, size_t row2) {
 // Определитель
 double Matrix::determinant() const {
     if (rows != cols) {
-        std::cerr << "Determinant is defined only for square matrices." << std::endl;
-        return 0.0;
+        throw std::invalid_argument("Determinant is defined only for square matrices.");
     }
     if (rows == 1) {
         return matrix[0][0];
@@ -170,8 +164,7 @@ double Matrix::determinant() const {
 Matrix Matrix::inverse() const {
     double det = determinant();
     if (det == 0) {
-        	std::cerr << "Matrix is singular and cannot be inverted." << std::endl;
-        	return Matrix(rows, cols);
+        throw std::invalid_argument("Inverse is defined only for square matrices.");
     }
     Matrix result(rows, cols);
     for (size_t i = 0; i < rows; ++i) {
@@ -203,7 +196,7 @@ size_t Matrix::rank() const {
 // Возведение в степень
 Matrix Matrix::power(int exp) const {
     if (rows != cols) {
-        std::cerr << "Matrix exponentiation is defined only for square matrices." << std::endl;
+        throw std::invalid_argument("Matrix dimensions must match for exponentiation.");
     }
     if (exp == 0) {
         return Matrix(rows); // Identity matrix
@@ -228,13 +221,37 @@ void Matrix::fill() {
 	}
 }
 
+// Заполнение матрицы случайными числами
+void Matrix::fillRandom(int min, int max) {
+	// Проверка корректности диапазона
+    if (min > max) {
+        std::swap(min, max);
+    }
+
+    // Инициализируем генератор случайных чисел
+    srand(static_cast<unsigned>(time(nullptr)));
+
+    // Заполняем матрицу случайными числами
+    for (size_t i = 0; i < rows; ++i) {
+        for (size_t j = 0; j < cols; ++j) {
+            // Генерируем случайное число в диапазоне [min, max]
+            matrix[i][j] = min + rand() % (max - min + 1);
+        }
+    }
+}
+
 // Вывод матрицы на экран
 void Matrix::print() {
-	for (const auto& row : matrix) {
-		std::cout << "|";
-		for (double elem : row) {
-			std::cout << std::setw(2) << elem << " ";
-		}
-		std::cout << "|" << std::endl;
-	}
+    std::cout << std::fixed << std::setprecision(2); // Set precision for floating point output
+    for (size_t i = 0; i < rows; ++i) {
+        std::cout << "["; // Use brackets for row delimiters
+        for (size_t j = 0; j < cols; ++j) {
+           std::cout << std::setw(8) << matrix[i][j]; // Consistent width for elements
+            if (j < cols - 1) {
+                std::cout << ", "; // Comma and space separators
+            }
+        }
+        std::cout << "]\n";
+    }
+    std::cout << std::defaultfloat;
 }

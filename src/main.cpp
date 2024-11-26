@@ -1,113 +1,251 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <memory>
+#include <locale>
 #include "Matrix.h"
 
+// Функция для создания матрицы
+Matrix createMatrix() {
+    size_t rows, cols;
+    std::cout << "Введите количество строк: ";
+    std::cin >> rows;
+    std::cout << "Введите количество столбцов: ";
+    std::cin >> cols;
+
+    Matrix matrix(rows, cols);
+
+    int fillChoice;
+    std::cout << "Выберите способ заполнения матрицы:\n";
+    std::cout << "1. Автоматическое заполнение\n";
+    std::cout << "2. Ручной ввод\n";
+    std::cout << "Ваш выбор: ";
+    std::cin >> fillChoice;
+
+    if (fillChoice == 1) {
+        matrix.fillRandom();
+    } else if (fillChoice == 2) {
+        std::cout << "Введите элементы матрицы:\n";
+        for (size_t i = 0; i < rows; ++i) {
+            for (size_t j = 0; j < cols; ++j) {
+                double value;
+                std::cout << "Элемент [" << i << "][" << j << "]: ";
+                std::cin >> value;
+                matrix(i, j) = value;
+            }
+        }
+    }
+
+    return matrix;
+}
+
+// Главное меню
+void showMainMenu() {
+    std::cout << "\n--- Калькулятор матриц ---\n";
+    std::cout << "1. Создать матрицу\n";
+    std::cout << "2. Вывести матрицу\n";
+    std::cout << "3. Транспонировать матрицу\n";
+    std::cout << "4. Сложение матриц\n";
+    std::cout << "5. Вычитание матриц\n";
+    std::cout << "6. Умножение матриц\n";
+    std::cout << "7. Умножение матрицы на скаляр\n";
+    std::cout << "8. Деление матрицы на скаляр\n";
+    std::cout << "9. Возведение матрицы в степень\n";
+    std::cout << "10. Вычисление определителя\n";
+    std::cout << "11. Вычисление обратной матрицы\n";
+    std::cout << "12. Вычисление ранга матрицы\n";
+    std::cout << "0. Выход\n";
+    std::cout << "Введите номер операции: ";
+}
+
 int main() {
+	setlocale(LC_ALL, "Russian");
 
-	Matrix A(3, 3);
-	A.fill();
-	std::cout << "Matrix A:" << std::endl;
-	A.print();
+	// Вектор для хранения матриц
+    std::vector<std::unique_ptr<Matrix>> matrices;
 
-	// Транспонирование
-	std::cout << std::endl << "Transposed A:" << std::endl;
-	Matrix T = A.transpose();
-	T.print();
-	std::cout << std::endl;
+	int choice;
+    do {
+        showMainMenu();
+        std::cin >> choice;
 
-	// Сложение
-	std::cout << "A + T:" << std::endl;
-	Matrix A2 = A + T;
-	A2.print();
-	std::cout << std::endl;
+        try {
+            switch (choice) {
+                case 1: {
+                    matrices.emplace_back(std::make_unique<Matrix>(createMatrix()));
+                    std::cout << "Матрица создана. Индекс: " << matrices.size() - 1 << std::endl;
+                    break;
+                }
+                case 2: {
+                    size_t index;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    if (index < matrices.size()) {
+                        std::cout << "Матрица [" << index << "]:\n";
+                        matrices[index]->print();
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 3: {
+                    size_t index;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    if (index < matrices.size()) {
+                        Matrix transposed = matrices[index]->transpose();
+                        std::cout << "Транспонированная матрица:\n";
+                        transposed.print();
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 4: {
+                    size_t index1, index2;
+                    std::cout << "Введите индекс первой матрицы: ";
+                    std::cin >> index1;
+                    std::cout << "Введите индекс второй матрицы: ";
+                    std::cin >> index2;
+                    if (index1 < matrices.size() && index2 < matrices.size()) {
+                        Matrix sum = *matrices[index1] + *matrices[index2];
+                        std::cout << "Результат сложения:\n";
+                        sum.print();
+                    } else {
+                        std::cout << "Неверные индексы матриц.\n";
+                    }
+                    break;
+                }
+                case 5: {
+                    size_t index1, index2;
+                    std::cout << "Введите индекс первой матрицы: ";
+                    std::cin >> index1;
+                    std::cout << "Введите индекс второй матрицы: ";
+                    std::cin >> index2;
+                    if (index1 < matrices.size() && index2 < matrices.size()) {
+                        Matrix diff = *matrices[index1] - *matrices[index2];
+                        std::cout << "Результат вычитания:\n";
+                        diff.print();
+                    } else {
+                        std::cout << "Неверные индексы матриц.\n";
+                    }
+                    break;
+                }
+                case 6: {
+                    size_t index1, index2;
+                    std::cout << "Введите индекс первой матрицы: ";
+                    std::cin >> index1;
+                    std::cout << "Введите индекс второй матрицы: ";
+                    std::cin >> index2;
+                    if (index1 < matrices.size() && index2 < matrices.size()) {
+                        Matrix product = *matrices[index1] * *matrices[index2];
+                        std::cout << "Результат умножения:\n";
+                        product.print();
+                    } else {
+                        std::cout << "Неверные индексы матриц.\n";
+                    }
+                    break;
+                }
+                case 7: {
+                    size_t index;
+                    double scalar;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    std::cout << "Введите скаляр: ";
+                    std::cin >> scalar;
+                    if (index < matrices.size() && matrices[index]) {
+                        Matrix scaled = *matrices[index] * scalar;
+                        std::cout << "Результат умножения на скаляр:\n";
+                        scaled.print();
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 8: {
+                    size_t index;
+                    double scalar;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    std::cout << "Введите скаляр: ";
+                    std::cin >> scalar;
+                    if (index < matrices.size() && matrices[index]) {
+                        if (scalar != 0) {
+                            Matrix scaled = *matrices[index] / scalar;
+                            std::cout << "Результат деления на скаляр:\n";
+                            scaled.print();
+                        } else {
+                            std::cout << "Ошибка: деление на ноль.\n";
+                        }
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 9: {
+                    size_t index;
+                    int power;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    std::cout << "Введите степень: ";
+                    std::cin >> power;
+                    if (index < matrices.size() && matrices[index]) {
+                        Matrix powered = matrices[index]->power(power);
+                        std::cout << "Результат возведения в степень:\n";
+                        powered.print();
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 10: {
+                    size_t index;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    if (index < matrices.size() && matrices[index]) {
+                        double det = matrices[index]->determinant();
+                        std::cout << "Определитель матрицы: " << det << std::endl;
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 11: {
+                    size_t index;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    if (index < matrices.size() && matrices[index]) {
+                        Matrix inv = matrices[index]->inverse();
+                        std::cout << "Обратная матрица:\n";
+                        inv.print();
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 12: {
+                    size_t index;
+                    std::cout << "Введите индекс матрицы: ";
+                    std::cin >> index;
+                    if (index < matrices.size() && matrices[index]) {
+                        size_t rank = matrices[index]->rank();
+                        std::cout << "Ранг матрицы: " << rank << std::endl;
+                    } else {
+                        std::cout << "Неверный индекс матрицы.\n";
+                    }
+                    break;
+                }
+                case 0:
+                    std::cout << "Программа завершена.\n";
+                    break;
+                default:
+                    std::cout << "Неверный выбор. Попробуйте снова.\n";
+            }
+        } catch (const std::exception& e) {
+            std::cout << "Ошибка: " << e.what() << std::endl;
+        }
 
-	// Вычитание
-	std::cout << "A - A:" << std::endl;
-	A2 = A - A;
-	A2.print();
-	std::cout << std::endl;
-
-	// Умножение
-	Matrix B(2, 3), C(3, 5);
-	B.fill();
-	C.fill();
-	B.print();
-	std::cout << std::endl;
-	C.print();
-	std::cout << std::endl;
-
-	std::cout << "B * C:" << std::endl;
-	Matrix BC = B * C;
-	BC.print();
-	std::cout << std::endl;
-
-	std::cout << "A * 2" << std::endl;
-	A2 = A * 2;
-	A2.print();
-	std::cout << "A / 2" << std::endl;
-	A2 = A / 2;
-	A2.print();
-	std::cout << std::endl;
-
-	// Возведение в степень
-	std::cout << "A^2:" << std::endl;
-	Matrix A_squared = A.power(2);
-	A_squared.print();
-	std::cout << "A^3:" << std::endl;
-	Matrix A_cubed = A.power(3);
-	A_cubed.print();
-	std::cout << std::endl;
-
-	double A_det = A.determinant();
-	std::cout << "Determinant of A: " << A_det << std::endl;
-	std::cout << std::endl;
-
-	Matrix A_inv = A.inverse();
-	std::cout << "Inverse of A:" << std::endl;
-	A_inv.print();
-	std::cout << std::endl;
-
-	size_t A_rank = A.rank();
-	std::cout << "Rank of A: " << A_rank << std::endl;
-	std::cout << std::endl;
-
-	Matrix D(3, 3);
-	D(0, 0) = 6; D(0, 1) = 1; D(0, 2) = 1;
-	D(1, 0) = 4; D(1, 1) = -2; D(1, 2) = 5;
-	D(2, 0) = 2; D(2, 1) = 8; D(2, 2) = 7;
-
-	std::cout << "Matrix D:" << std::endl;
-	D.print();
-
-	double D_det = D.determinant();
-	std::cout << "Determinant of D: " << D_det << std::endl;
-	std::cout << std::endl;
-
-	Matrix I(3, 3);
-	I(0, 0) = 2; I(0, 1) = -1; I(0, 2) = 0;
-	I(1, 0) = -1; I(1, 1) = 2; I(1, 2) = -1;
-	I(2, 0) = 0; I(2, 1) = -1; I(2, 2) = 2;
-
-	std::cout << "Matrix I:" << std::endl;
-	I.print();
-
-	Matrix I_inv = I.inverse();
-	std::cout << "Inverse of I:" << std::endl;
-	I_inv.print();
-	std::cout << std::endl;
-
-	Matrix R(3, 4);
-	R(0, 0) = 1; R(0, 1) = 2; R(0, 2) = 3; R(0, 3) = 4;
-	R(1, 0) = 2; R(1, 1) = 4; R(1, 2) = 6; R(1, 3) = 8;
-	R(2, 0) = 3; R(2, 1) = 6; R(2, 2) = 9; R(2, 3) = 12;
-
-	std::cout << "Matrix R:" << std::endl;
-	R.print();
-
-	size_t R_rank = R.rank();
-	std::cout << "Rank of R: " << R_rank << std::endl;
-	std::cout << std::endl;
+    } while (choice != 0);
 
 	return 0;
 }

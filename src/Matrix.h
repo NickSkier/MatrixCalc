@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <cstdlib>
+#include <ctime>
 
 class Matrix {
 private:
@@ -32,8 +34,9 @@ public:
     size_t rank() const;             // Ранг матрицы
     Matrix power(int exp) const;     // Возведение в степень
 
-    void fill();  // Заполнение матрицы
-    void print(); // Вывод матрицы на экран
+    void fill();  						// Заполнение матрицы
+	void fillRandom(int min = 0, int max = 100);	// Заполнение матрицы случайными числами
+    void print(); 						// Вывод матрицы на экран
 };
 
 #endif // MATRIX_H
