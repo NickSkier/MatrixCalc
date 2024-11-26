@@ -42,6 +42,14 @@ int main() {
 	BC.print();
 	std::cout << std::endl;
 
+	std::cout << "A * 2" << std::endl;
+	A2 = A * 2;
+	A2.print();
+	std::cout << "A / 2" << std::endl;
+	A2 = A / 2;
+	A2.print();
+	std::cout << std::endl;
+
 	// Возведение в степень
 	std::cout << "A^2:" << std::endl;
 	Matrix A_squared = A.power(2);

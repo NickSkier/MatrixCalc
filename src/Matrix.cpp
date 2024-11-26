@@ -84,6 +84,28 @@ Matrix Matrix::operator*(const Matrix& other) const {
 	return result;
 }
 
+// Умножение матрицы на скаляр
+Matrix Matrix::operator*(double scalar) const {
+	Matrix result(rows, cols);
+	for (size_t i = 0; i < rows; ++i) {
+		for (size_t j = 0; j < cols; ++j) {
+			result(i, j) = matrix[i][j] * scalar;
+		}
+	}
+	return result;
+}
+
+// Деление матрицы на скаляр
+Matrix Matrix::operator/(double scalar) const {
+	Matrix result(rows, cols);
+	for (size_t i = 0; i < rows; ++i) {
+		for (size_t j = 0; j < cols; ++j) {
+			result(i, j) = matrix[i][j] / scalar;
+		}
+	}
+	return result;
+}
+
 // Транспонирование
 Matrix Matrix::transpose() const {
 	Matrix result(cols, rows);

@@ -21,6 +21,8 @@ public:
     Matrix operator+(const Matrix& other) const; // Сложение матриц
     Matrix operator-(const Matrix& other) const; // Вычитание матриц
     Matrix operator*(const Matrix& other) const; // Умножение матриц
+	Matrix operator*(double scalar) const; // Умножение матрицы на скаляр
+	Matrix operator/(double scalar) const; // Деление матрицы на скаляр
 
     Matrix transpose() const;        // Транспонирование
     Matrix submatrix(size_t excludeRow, size_t excludeCol) const; // Подматрица
