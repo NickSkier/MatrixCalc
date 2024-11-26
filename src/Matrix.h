@@ -1,5 +1,4 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#pragma once
 
 #include <iostream>
 #include <vector>
@@ -13,8 +12,9 @@ private:
     size_t cols;
     std::vector<std::vector<double>> matrix;
 public:
-    Matrix(size_t size);               // Конструктор для квадратной матрицы
-    Matrix(size_t rows, size_t cols);  // Конструктор для матрицы произвольного размера
+    Matrix(size_t size);              	// Конструктор для квадратной матрицы
+    Matrix(size_t rows, size_t cols);  	// Конструктор для матрицы произвольного размера
+	~Matrix();							// Пустой деструктор
 
     const double& operator()(size_t row, size_t col) const; // Оператор доступа (для константного объекта)
     double& operator()(size_t row, size_t col);             // Оператор доступа
@@ -33,9 +33,7 @@ public:
     size_t rank() const;             // Ранг матрицы
     Matrix power(int exp) const;     // Возведение в степень
 
-    void fill();  						// Заполнение матрицы
+    void fill();  								// Заполнение матрицы
 	void fillRandom(int min = 0, int max = 100);	// Заполнение матрицы случайными числами
-    void print(); 						// Вывод матрицы на экран
+    void print(int precionSize = 4); 			// Вывод матрицы на экран
 };
-
-#endif // MATRIX_H

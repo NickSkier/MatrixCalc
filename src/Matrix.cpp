@@ -16,6 +16,9 @@ Matrix::Matrix(size_t rows, size_t cols) : rows(rows), cols(cols) {
 	}
 }
 
+// Пустой деструктор
+Matrix::~Matrix() {}
+
 // Оператор доступа для константного объекта
 const double& Matrix::operator()(size_t row, size_t col) const {
 	if (row >= rows || col >= cols) {
@@ -238,17 +241,17 @@ void Matrix::fillRandom(int min, int max) {
 }
 
 // Вывод матрицы на экран
-void Matrix::print() {
-    std::cout << std::fixed << std::setprecision(2); // Set precision for floating point output
+void Matrix::print(int precionSize) {
+    std::cout << std::fixed << std::setprecision(precionSize);
     for (size_t i = 0; i < rows; ++i) {
-        std::cout << "["; // Use brackets for row delimiters
+        std::cout << "|";
         for (size_t j = 0; j < cols; ++j) {
-           std::cout << std::setw(8) << matrix[i][j]; // Consistent width for elements
+           std::cout << std::setw(std::to_string(matrix[0][0]).length()) << matrix[i][j];
             if (j < cols - 1) {
-                std::cout << ", "; // Comma and space separators
+                std::cout << ", ";
             }
         }
-        std::cout << "]\n";
+        std::cout << "  |\n";
     }
     std::cout << std::defaultfloat;
 }

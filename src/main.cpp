@@ -59,13 +59,14 @@ void showMainMenu() {
     std::cout << "Введите номер операции: ";
 }
 
-std::vector<int> settings = {1};
+std::vector<int> settings = {1, 4};
 //  Меню настроек
 void showSettingsMenu() {
     std::cout << "\n--- Настройки калькулятора ---\n";
     std::cout << "1. Сохранять результаты операций : " << settings[0] << std::endl;
+    std::cout << "2. Чисел после запятой : " << settings[1] << std::endl;
     std::cout << "0. Вернуться\n";
-    std::cout << "Введите номер операции: ";
+    std::cout << "Введите номер настроек: ";
 }
 
 int main() {
@@ -285,6 +286,11 @@ int main() {
 		                case 1: {
 		                    std::cout << "Сохранять ли результаты операций как новые матрицы с отдельным индексом? 1 (Да), 0 (Нет): ";
 		                    std::cin >> settings[0];
+		                    break;
+		                }
+		                case 2: {
+		                    std::cout << "Сколько чисел после запятой отображать: ";
+		                    std::cin >> settings[1];
 		                    break;
 		                }
 		                case 0:
